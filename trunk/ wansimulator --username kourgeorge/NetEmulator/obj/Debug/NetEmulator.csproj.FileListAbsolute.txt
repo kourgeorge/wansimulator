@@ -1,0 +1,13 @@
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\ResolveAssemblyReference.cache
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\NetEmulator.Form1.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\NetEmulator.Properties.Resources.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\NetEmulator.csproj.GenerateResource.Cache
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\NetEmulator.Stopper.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\NetEmulator.Clock.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\NetEmulator.NetMon.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\NetEmulator.ExcludeList.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\NetEmulator.About.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\bin\Debug\WANSim.exe
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\bin\Debug\WANSim.pdb
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\WANSim.exe
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Debug\WANSim.pdb

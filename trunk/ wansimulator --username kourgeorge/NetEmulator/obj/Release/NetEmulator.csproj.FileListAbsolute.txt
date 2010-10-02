@@ -1,0 +1,15 @@
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\ResolveAssemblyReference.cache
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\NetEmulator.Properties.Resources.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\NetEmulator.csproj.GenerateResource.Cache
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\NetEmulator.About.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\NetEmulator.Clock.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\NetEmulator.NetMon.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\NetEmulator.Stopper.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\NetEmulator.Form1.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\NetEmulator.ExcludeList.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\bin\Release\WANSim.exe
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\bin\Release\WANSim.pdb
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\WANSim.exe
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\WANSim.pdb
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\Slepov.WinForms.Plotter.resources
+C:\Documents and Settings\kour\My Documents\Visual Studio 2008\Projects\NetEmulator\NetEmulator\obj\Release\iptb.IPTextBox.resources
