@@ -37,6 +37,7 @@ namespace NetEmulator
                 PingTime.ForeColor = Color.Black;
                 PingGraph.Value = 0;
                 mstoolStrip.Visible = false;
+                plotter.Clear();
             }
 
             else
@@ -52,15 +53,7 @@ namespace NetEmulator
 
             }
         }
-        /* Old code
-        private void NetMontimer_Tick(object sender, EventArgs e)
-        {
-            PingHost();
-            this.Update();
-          
-        }
-         */
-        // new code
+
 
         private void NetMontimer_Tick(object sender, EventArgs e)
         {
@@ -112,29 +105,31 @@ namespace NetEmulator
             else
             {
                 // this is UI thread
-                if (pingtime == int.MaxValue) //if Unreachable
+                if (NetMontimer.Enabled==true) //only if the netmon is running
                 {
-                    PingTime.Text = "Unreachable";
-                    PingTime.ForeColor = Color.Red;
-                    mstoolStrip.Visible = false;
-                }
-                else
-                {
-                    PingTime.ForeColor = Color.Black;
-                    mstoolStrip.Visible = true;
-                    if (pingtime < 1) PingTime.Text = "<1";
-                    else
-                        PingTime.Text = pingtime.ToString();
-
-                    if ((int)pingtime > 900)
-                        PingGraph.Value = 900;
+                    if (pingtime == int.MaxValue) //if Unreachable
+                    {
+                        PingTime.Text = "Unreachable";
+                        PingTime.ForeColor = Color.Red;
+                        mstoolStrip.Visible = false;
+                    }
                     else
                     {
-                        PingGraph.Value = (int)pingtime;
+                        PingTime.ForeColor = Color.Black;
+                        mstoolStrip.Visible = true;
+                        if (pingtime < 1) PingTime.Text = "<1";
+                        else
+                            PingTime.Text = pingtime.ToString();
+
+                        if ((int)pingtime > 900)
+                            PingGraph.Value = 900;
+                        else
+                        {
+                            PingGraph.Value = (int)pingtime;
+                        }
+                        plotter.Add((int)pingtime + 10); // the 10 is to be able to see time 0 in the graph.
+
                     }
-                    plotter.Add((int)pingtime+10); // the 10 is to be able to see time 0 in the graph.
-
-
                 }
 
             }
@@ -159,6 +154,11 @@ namespace NetEmulator
            {
                NetMontimer.Enabled = false;
            }
+       }
+
+       private void button1_Click(object sender, EventArgs e)
+       {
+           plotter.Clear();
        }
 
 

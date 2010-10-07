@@ -475,7 +475,7 @@
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>This tool aimed to perform Network Emulation to help Performance Engineers assessing the software behavior under different Network conditions. 
 
-WANSim was Developed based on Dummynet OpenSource Project. 
+WANsim was Developed based on Dummynet OpenSource Project. 
 Visit the following URL for more information: http://info.iet.unipi.it/~luigi/dummynet/.
 
 For defect reporting or any other suggenstions, please contact me by mail: george.kour@hp.com

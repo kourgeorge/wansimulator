@@ -39,6 +39,7 @@
             this.IncludeRB = new System.Windows.Forms.RadioButton();
             this.Editbutton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.IPTextBox = new iptb.IPTextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -90,7 +91,7 @@
             this.groupBox1.Controls.Add(this.OKList);
             this.groupBox1.Controls.Add(this.IPlistBox);
             this.groupBox1.Controls.Add(this.RemoveList);
-            this.groupBox1.Location = new System.Drawing.Point(4, 59);
+            this.groupBox1.Location = new System.Drawing.Point(4, 82);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(209, 193);
             this.groupBox1.TabIndex = 1;
@@ -142,14 +143,25 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.button1);
             this.groupBox2.Controls.Add(this.IPTextBox);
             this.groupBox2.Controls.Add(this.AddIP);
             this.groupBox2.Location = new System.Drawing.Point(4, 10);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(209, 43);
+            this.groupBox2.Size = new System.Drawing.Size(209, 68);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Enter IP Address";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(19, 42);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(91, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "DNS Resolver";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // IPTextBox
             // 
@@ -163,7 +175,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(220, 255);
+            this.ClientSize = new System.Drawing.Size(226, 275);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -195,6 +207,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RadioButton ExcludeRB;
         private System.Windows.Forms.RadioButton IncludeRB;
-        private iptb.IPTextBox IPTextBox;
+        private System.Windows.Forms.Button button1;
+        public iptb.IPTextBox IPTextBox;
     }
 }

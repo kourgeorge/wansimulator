@@ -183,6 +183,12 @@ namespace Slepov.WinForms
 
         readonly RingBuffer <float> values = new RingBuffer <float> (1000);
 
+        public void Clear()
+        {
+            values.Clear();
+        }
+
+
         void PaintGraph (Graphics g)
         {
             if (this.values.Count == 0) return;
@@ -258,6 +264,13 @@ namespace Slepov.WinForms
             get {return this.buf.Length;}
         }
 
+        public void Clear()
+        {
+            this.buf.Initialize();
+            head = tail = 0;
+            empty = true;
+        }
+
         T [] buf;
         int head=0, tail=0;
         bool empty = true;
@@ -299,5 +312,6 @@ namespace Slepov.WinForms
 
             return (tail + i) % buf.Length;
         }
+
     }
 }

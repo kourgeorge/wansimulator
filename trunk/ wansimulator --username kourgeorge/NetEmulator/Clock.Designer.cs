@@ -64,7 +64,6 @@
             this.Text = "Clock";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.Clock_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Clock_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

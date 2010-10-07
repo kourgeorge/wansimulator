@@ -12,10 +12,10 @@ namespace NetEmulator
         public About()
         {
             InitializeComponent();
-            this.Text = String.Format("About {0}", "WANSim");
+            this.Text = String.Format("About {0}", "WANsim");
             //this.labelProductName.Text = AssemblyProduct;
-            this.labelProductName.Text = "WANSim";
-            this.labelVersion.Text = String.Format("Version 1.5");
+            this.labelProductName.Text = "WANsim";
+            this.labelVersion.Text = String.Format("Version 1.7");
             this.labelCopyright.Text = AssemblyCopyright;
             //this.labelCompanyName.Text = AssemblyCompany;
             this.labelCompanyName.Text = "Author: George Kour";
@@ -112,10 +112,6 @@ namespace NetEmulator
 
         }
 
-        private void labelVersion_Click(object sender, EventArgs e)
-        {
-
-        }
 
 
     }

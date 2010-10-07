@@ -15,9 +15,9 @@ namespace NetEmulator
     public partial class Form1 : Form
     {
         private string Appdirectory;
-        public LinkedList<String> FilteredIPLinkedList=new LinkedList<String>();
-        public bool IncludePolicy; 
-        
+        public LinkedList<String> FilteredIPLinkedList = new LinkedList<String>();
+        public bool IncludePolicy;
+
 
         public Form1()
         {
@@ -29,11 +29,16 @@ namespace NetEmulator
             stopB.Enabled = false;
             stopToolStripMenuItem.Enabled = false;
             StopStrip.Enabled = false;
-            IncludePolicy=false;
+            IncludePolicy = false;
+            BWcomboBox.SelectedIndex=15;  //select Unrestricted
         }
         private string IncludePolicySimulationString()
         {
-            string Configuration = SimulationConfiguration();
+            string Configuration;
+            if (ModetabControl.SelectedTab.Name == "BasicTab")
+                Configuration = SimulationConfiguration();
+            else Configuration = AdvancedSimulationConfiguration();
+
             foreach (string IPString in FilteredIPLinkedList)
             {
                 Configuration += "ipfw add 100 pipe 1 src-ip " + IPString + " in\r\n";
@@ -48,14 +53,16 @@ namespace NetEmulator
             int rulenum = 100;
             foreach (string IPString in FilteredIPLinkedList)
             {
-                Configuration += "ipfw add " + rulenum + " skipto 20000 all from " + IPString+" to any\r\n";
+                Configuration += "ipfw add " + rulenum + " skipto 20000 all from " + IPString + " to any\r\n";
                 ++rulenum;
                 Configuration += "ipfw add " + rulenum + " skipto 20000 all from any to " + IPString + "\r\n";
                 ++rulenum;
             }
             //Handle all the other (included in the simulation)
             Configuration += "\r\n";
-            Configuration += SimulationConfiguration();
+            if (ModetabControl.SelectedTab.Name == "BasicTab")
+                Configuration += SimulationConfiguration();
+            else Configuration += AdvancedSimulationConfiguration();
 
             Configuration += "ipfw add pipe 1 ip from any to any in\r\n";
             Configuration += "ipfw add pipe 2 ip from any to any out\r\n";
@@ -65,11 +72,11 @@ namespace NetEmulator
 
         private string SimulationConfiguration()
         {
-            string configuration="";
+            string configuration = "";
             //define 2 half duplex pipes 
-            for (int i=1; i<=2 ;i++)
+            for (int i = 1; i <= 2; i++)
             {
-                configuration += "ipfw pipe "+i+" config ";
+                configuration += "ipfw pipe " + i + " config ";
                 configuration += "delay " + DelayTB.Value * 40 + "ms ";
 
                 if (BWLabel.Text != "Unrestricted")
@@ -83,8 +90,34 @@ namespace NetEmulator
                     configuration += "plr " + val;
                 }
 
-            configuration += " mask all";
-            configuration += "\r\n";
+                configuration += " mask all";
+                configuration += "\r\n";
+            }
+            return configuration;
+        }
+
+        private string AdvancedSimulationConfiguration()
+        {
+            string configuration = "";
+            //define 2 half duplex pipes 
+            for (int i = 1; i <= 2; i++)
+            {
+                configuration += "ipfw pipe " + i + " config ";
+                configuration += "delay " + DelaytextBox.Text + "ms ";
+
+                if (BWcomboBox.SelectedText != "Unrestricted")
+                {
+                    configuration += "bw " + BWcomboBox.SelectedText + "Kbit/s ";
+                }
+
+                if (PLtextBox.Text != "0")
+                {
+                    double val = Convert.ToInt32(PLtextBox.Text) / 100.0;
+                    configuration += "plr " + val;
+                }
+
+                configuration += " mask all";
+                configuration += "\r\n";
             }
             return configuration;
         }
@@ -104,11 +137,11 @@ namespace NetEmulator
                 sw.WriteLine("@ipfw -q flush");
                 sw.WriteLine("@ipfw -q pipe flush");
 
-                if (IncludePolicy==true) 
+                if (IncludePolicy == true)
                     sw.WriteLine(IncludePolicySimulationString());
-                else 
+                else
                     sw.WriteLine(ExcludePolicySimulationString());
-                
+
                 sw.WriteLine("ipfw pipe show");
                 sw.Close();
 
@@ -124,7 +157,7 @@ namespace NetEmulator
 
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
                 process.StartInfo = procStartInfo;
-                
+
                 procStartInfo.WorkingDirectory = Appdirectory;
                 process.Start();
 
@@ -141,7 +174,7 @@ namespace NetEmulator
                 string RunOutput = sb.ToString();
                 if (RunOutput.Contains("cannot talk to kernel module"))
                 {
-                    throw(new Exception("The needed driver is not installed on your Network Device.\nPlease refer the Help for more information"));
+                    throw (new Exception("The needed driver is not installed on your Network Device.\nPlease refer the Help for more information"));
                 }
 
                 startB.Enabled = false;
@@ -149,18 +182,20 @@ namespace NetEmulator
                 StartStrip.Enabled = false;
                 StopStrip.Enabled = true;
                 MainPanel.Enabled = false;
-                Notifytimer.Enabled = true;
+                ModetabControl.Enabled = false;
                 Listbutton.Enabled = false;
                 excludeListStrip.Enabled = false;
                 startToolStripMenuItem.Enabled = false;
                 stopToolStripMenuItem.Enabled = true;
-                MainNotifyIcon.Text = "WANSim\nStatus: Running";
-                MainNotifyIcon.BalloonTipTitle = "WANSim";
+                MainNotifyIcon.Text = "WANsim\nStatus: Running";
+                MainNotifyIcon.BalloonTipTitle = "WANsim";
                 MainNotifyIcon.BalloonTipText = "Network Simulation is Running";
                 MainNotifyIcon.ShowBalloonTip(50);
                 ConfigurationgroupBox.Enabled = false;
                 loadConfigurationToolStrip.Enabled = false;
                 saveConfigurationToolStrip.Enabled = false;
+                this.Text = "WANsim (Running)";
+                MainNotifyIcon.Icon = new Icon("run.ico");
 
             }
             catch (Exception exp)
@@ -171,88 +206,90 @@ namespace NetEmulator
         }
 
 
-        
+
 
         private void stopB_Click(object sender, EventArgs e)
         {
-                try
+            try
+            {
+                //create a batch file
+                string batchPath = System.IO.Path.Combine(Appdirectory, "emulation_stop.bat");
+                FileInfo fi = new FileInfo(batchPath);
+
+                StreamWriter sw = fi.CreateText();
+                //The List Of Operations you want to execute.
+
+                sw.WriteLine("@ipfw -q flush");
+                sw.WriteLine("@ipfw -q pipe flush");
+                sw.Close();
+
+                //try this
+                System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo(fi.FullName);
+                procStartInfo.RedirectStandardOutput = true;
+                procStartInfo.UseShellExecute = false;
+
+
+                procStartInfo.CreateNoWindow = true;
+                procStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+                //additional options
+                procStartInfo.WorkingDirectory = Appdirectory;
+
+
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                process.StartInfo = procStartInfo;
+                procStartInfo.WorkingDirectory = Appdirectory;
+                process.Start();
+
+
+                //additional options
+
+                StringBuilder sb = new StringBuilder();
+                string strLine;
+
+                while ((strLine = process.StandardOutput.ReadLine()) != null)
                 {
-                    //create a batch file
-                    string batchPath = System.IO.Path.Combine(Appdirectory, "emulation_stop.bat");
-                    FileInfo fi = new FileInfo(batchPath);
-
-                    StreamWriter sw = fi.CreateText();
-                    //The List Of Operations you want to execute.
-
-                    sw.WriteLine("@ipfw -q flush");
-                    sw.WriteLine("@ipfw -q pipe flush");
-                    sw.Close();
-
-                    //try this
-                    System.Diagnostics.ProcessStartInfo procStartInfo = new System.Diagnostics.ProcessStartInfo(fi.FullName);
-                    procStartInfo.RedirectStandardOutput = true;
-                    procStartInfo.UseShellExecute = false;
-
-
-                    procStartInfo.CreateNoWindow = true;
-                    procStartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-
-                    //additional options
-                    procStartInfo.WorkingDirectory = Appdirectory;
-
-
-                    System.Diagnostics.Process process = new System.Diagnostics.Process();
-                    process.StartInfo = procStartInfo;
-                    procStartInfo.WorkingDirectory = Appdirectory;
-                    process.Start();
-
-
-                    //additional options
-                    
-                    StringBuilder sb = new StringBuilder();
-                    string strLine;
-
-                    while ((strLine = process.StandardOutput.ReadLine()) != null)
-                    {
-                        sb.AppendLine(strLine);
-                    }
-
-                    string RunOutput = sb.ToString();
-                    /* not needed in the stop
-                    if (RunOutput.Contains("cannot talk to kernel module"))
-                    {
-                        throw (new Exception("The needed driver is not installed on your Network Device.\nPlease refer the Help for more information"));
-                    }
-                    */
-
-                    if (startB.Enabled == false) // do all this only if the simulation is started.
-                    {
-                        startB.Enabled = true;
-                        stopB.Enabled = false;
-                        StartStrip.Enabled = true;
-                        StopStrip.Enabled = false;
-                        MainPanel.Enabled = true;
-                        Notifytimer.Enabled = false;
-                        Listbutton.Enabled = true;
-                        excludeListStrip.Enabled = true;
-                        startToolStripMenuItem.Enabled = true;
-                        stopToolStripMenuItem.Enabled = false;
-                        MainNotifyIcon.Text = "WANSim\nStatus: Ready";
-                        MainNotifyIcon.BalloonTipTitle = "WANSim Emulator";
-                        MainNotifyIcon.BalloonTipText = "Network Simulation Stopped";
-                        MainNotifyIcon.ShowBalloonTip(50);
-                        ConfigurationgroupBox.Enabled = true;
-                        loadConfigurationToolStrip.Enabled = true;
-                        saveConfigurationToolStrip.Enabled = true;
-                    }
+                    sb.AppendLine(strLine);
                 }
-                catch (Exception exp)
+
+                string RunOutput = sb.ToString();
+                /* not needed in the stop
+                if (RunOutput.Contains("cannot talk to kernel module"))
                 {
-                    string message = "Error has occured, please contact the author.\r\n\r\n" + "More Information:\r\n" + exp.Message;
-                    MessageBox.Show(message);
+                    throw (new Exception("The needed driver is not installed on your Network Device.\nPlease refer the Help for more information"));
                 }
+                */
+
+                if (startB.Enabled == false) // do all this only if the simulation is started.
+                {
+                    startB.Enabled = true;
+                    stopB.Enabled = false;
+                    StartStrip.Enabled = true;
+                    StopStrip.Enabled = false;
+                    MainPanel.Enabled = true;
+                    ModetabControl.Enabled = true;
+                    Listbutton.Enabled = true;
+                    excludeListStrip.Enabled = true;
+                    startToolStripMenuItem.Enabled = true;
+                    stopToolStripMenuItem.Enabled = false;
+                    MainNotifyIcon.Text = "WANsim\nStatus: Ready";
+                    MainNotifyIcon.BalloonTipTitle = "WANsim Emulator";
+                    MainNotifyIcon.BalloonTipText = "Network Simulation Stopped";
+                    MainNotifyIcon.ShowBalloonTip(50);
+                    ConfigurationgroupBox.Enabled = true;
+                    loadConfigurationToolStrip.Enabled = true;
+                    saveConfigurationToolStrip.Enabled = true;
+                    this.Text = "WANsim";
+                    MainNotifyIcon.Icon = new Icon("state1.ico");
+                }
+            }
+            catch (Exception exp)
+            {
+                string message = "Error has occured, please contact the author.\r\n\r\n" + "More Information:\r\n" + exp.Message;
+                MessageBox.Show(message);
+            }
         }
-        
+
 
         private void BWTB_Scroll(object sender, EventArgs e)
         {
@@ -269,7 +306,7 @@ namespace NetEmulator
 
         private void DelayTB_Scroll(object sender, EventArgs e)
         {
-            DelayLabel.Text = (DelayTB.Value*40).ToString();
+            DelayLabel.Text = (DelayTB.Value * 40).ToString();
         }
 
         private void PLTB_Scroll(object sender, EventArgs e)
@@ -307,12 +344,6 @@ namespace NetEmulator
         {
             NetMon NetMonForm = new NetMon();
             NetMonForm.Show();
-        }
-
-        private void Notifytimer_Tick(object sender, EventArgs e)
-        {
-         //   if (MainNotifyIcon.Visible == true) MainNotifyIcon.Icon =  ;
-         //   else MainNotifyIcon.Visible = true;
         }
 
 
@@ -364,7 +395,7 @@ namespace NetEmulator
             //Policy Description
             XmlElement Policy = xmldoc.CreateElement("", "Policy", "");
             XmlText actual_Policy;
-            if (IncludePolicy==true)
+            if (IncludePolicy == true)
                 actual_Policy = xmldoc.CreateTextNode("Include");
             else actual_Policy = xmldoc.CreateTextNode("Exclude");
             Policy.AppendChild(actual_Policy);
@@ -471,7 +502,7 @@ namespace NetEmulator
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            MainNotifyIcon.Dispose();
+            MainNotifyIcon.Visible = false;
             this.Close();
         }
 
@@ -483,6 +514,75 @@ namespace NetEmulator
             stopB_Click(sender, e);
         }
 
+        private void Form1timer_Tick(object sender, EventArgs e)
+        {
+            if (MainNotifyIcon.Icon == new Icon("run.ico"))
+            {
+                throw new Exception("working");
+            }
 
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DelaytextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsDigit(e.KeyChar) || e.KeyChar == 8)
+            {
+                if (e.KeyChar == 8)
+                    DelaytextBox.Text.Remove(DelaytextBox.Text.Length - 1, 1);
+                else if ((Convert.ToInt32((DelaytextBox.Text + e.KeyChar)) > 8000))
+                {
+                    DelaytextBox.Text = "8000";
+                    DelaytextBox.SelectAll();
+                    e.Handled = true;
+                }
+
+            }
+            else
+                e.Handled = true;
+        }
+
+        private void PLtextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (Char.IsDigit(e.KeyChar) || e.KeyChar == 8)
+            {
+                if (e.KeyChar == 8)
+                    PLtextBox.Text.Remove(PLtextBox.Text.Length - 1, 1);
+                else if ((Convert.ToInt32((PLtextBox.Text + e.KeyChar)) > 90))
+                {
+                    PLtextBox.Text = "90";
+                    PLtextBox.SelectAll();
+                    e.Handled = true;
+                }
+
+            }
+            else
+                e.Handled = true;
+        }
+
+        private void BWcomboBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            if (Char.IsDigit(e.KeyChar) || e.KeyChar == 8)
+            {
+                if (e.KeyChar == 8)
+                    PLtextBox.Text.Remove(PLtextBox.Text.Length - 1, 1);
+                else if ((Convert.ToInt32((PLtextBox.Text + e.KeyChar)) > 10240.0))
+                {
+                    PLtextBox.Text = "Unrestricted";
+                    PLtextBox.SelectAll();
+                    e.Handled = true;
+                }
+
+            }
+            else
+                e.Handled = true;
+        }
     }
+
 }

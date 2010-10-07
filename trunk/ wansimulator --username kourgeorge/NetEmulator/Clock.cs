@@ -28,13 +28,5 @@ namespace NetEmulator
                 clocklabel.Text = DateTime.Now.TimeOfDay.ToString().Substring(0, 10);
         }
 
-        private void Clock_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-        }
-
-
-
-
     }
 }

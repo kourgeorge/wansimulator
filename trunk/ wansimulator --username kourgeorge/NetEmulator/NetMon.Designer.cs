@@ -42,17 +42,17 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.plotter1 = new Slepov.WinForms.Plotter();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
             this.plotter = new Slepov.WinForms.Plotter();
-            this.plotter1 = new Slepov.WinForms.Plotter();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -181,6 +181,18 @@
             this.label2.TabIndex = 5;
             this.label2.Text = "- 0";
             // 
+            // plotter1
+            // 
+            this.plotter1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(66)))));
+            this.plotter1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
+            this.plotter1.Location = new System.Drawing.Point(22, 19);
+            this.plotter1.Max = 900F;
+            this.plotter1.Min = 0F;
+            this.plotter1.Name = "plotter1";
+            this.plotter1.Size = new System.Drawing.Size(214, 53);
+            this.plotter1.TabIndex = 4;
+            this.plotter1.Text = "plotter1";
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label11);
@@ -199,6 +211,26 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "RTT History";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(4, 34);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(25, 12);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "600 -";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(236, 34);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(25, 12);
+            this.label12.TabIndex = 11;
+            this.label12.Text = "- 600";
             // 
             // label8
             // 
@@ -260,26 +292,6 @@
             this.label7.TabIndex = 5;
             this.label7.Text = "- 0";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(4, 34);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(25, 12);
-            this.label11.TabIndex = 12;
-            this.label11.Text = "600 -";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(236, 34);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(25, 12);
-            this.label12.TabIndex = 11;
-            this.label12.Text = "- 600";
-            // 
             // plotter
             // 
             this.plotter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(66)))));
@@ -291,18 +303,6 @@
             this.plotter.Size = new System.Drawing.Size(207, 53);
             this.plotter.TabIndex = 4;
             this.plotter.Text = "RTT History";
-            // 
-            // plotter1
-            // 
-            this.plotter1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(67)))), ((int)(((byte)(66)))));
-            this.plotter1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
-            this.plotter1.Location = new System.Drawing.Point(22, 19);
-            this.plotter1.Max = 900F;
-            this.plotter1.Min = 0F;
-            this.plotter1.Name = "plotter1";
-            this.plotter1.Size = new System.Drawing.Size(214, 53);
-            this.plotter1.TabIndex = 4;
-            this.plotter1.Text = "plotter1";
             // 
             // NetMon
             // 
