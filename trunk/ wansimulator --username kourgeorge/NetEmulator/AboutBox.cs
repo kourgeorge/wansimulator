@@ -15,7 +15,7 @@ namespace NetEmulator
             this.Text = String.Format("About {0}", "WANsim");
             //this.labelProductName.Text = AssemblyProduct;
             this.labelProductName.Text = "WANsim";
-            this.labelVersion.Text = String.Format("Version 1.7");
+            this.labelVersion.Text = String.Format("Version 1.7.2");
             this.labelCopyright.Text = AssemblyCopyright;
             //this.labelCompanyName.Text = AssemblyCompany;
             this.labelCompanyName.Text = "Author: George Kour";
@@ -108,6 +108,11 @@ namespace NetEmulator
         }
 
         private void labelProductName_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelCopyright_Click(object sender, EventArgs e)
         {
 
         }

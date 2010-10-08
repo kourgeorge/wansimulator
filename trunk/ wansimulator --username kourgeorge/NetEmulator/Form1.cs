@@ -81,11 +81,11 @@ namespace NetEmulator
 
                 if (BWLabel.Text != "Unrestricted")
                 {
+                    string BW = ((Convert.ToDouble((BWLabel.Text))) / 2).ToString();
                     char[] arr = { '.' };
-                    string BW = (BWLabel.Text.Split(arr, 2))[0];
+                    BW = (BW.Split(arr, 2))[0];
                     configuration += " bw " + BW + "Kbit/s";
-                    //string BW = (Convert.ToInt32(Convert.ToDouble(BWLabel.Text) * 1024)).ToString();
-                    //configuration += " bw " + BW + "bit/s";
+
                 }
 
                 if (PLTB.Value != 0)
@@ -113,8 +113,9 @@ namespace NetEmulator
 
                 if (BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString() != "Unrestricted")
                 {
+                    string BW=((Convert.ToDouble(BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString())) / 2).ToString(); 
                     char[] arr = { '.' };
-                    string BW = (BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString().Split(arr, 2))[0];
+                    BW = (BW.Split(arr, 2))[0];
                     configuration += " bw " + BW + "Kbit/s";
                 }
 
@@ -167,6 +168,8 @@ namespace NetEmulator
 
                 procStartInfo.WorkingDirectory = Appdirectory;
                 process.Start();
+
+                Directory.SetCurrentDirectory(Appdirectory); //set the current directory to the original directory to find run.ico
 
 
                 //get the process output
@@ -241,6 +244,7 @@ namespace NetEmulator
 
                 //additional options
                 procStartInfo.WorkingDirectory = Appdirectory;
+                Directory.SetCurrentDirectory(Appdirectory); //set the current directory to the original directory to find run.ico
 
 
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
