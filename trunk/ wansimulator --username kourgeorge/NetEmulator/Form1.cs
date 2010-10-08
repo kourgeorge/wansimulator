@@ -81,8 +81,11 @@ namespace NetEmulator
 
                 if (BWLabel.Text != "Unrestricted")
                 {
-                    string BW = (Convert.ToInt32(Convert.ToDouble(BWLabel.Text) * 1024)).ToString();
-                    configuration += " bw " + BW + "bit/s";
+                    char[] arr = {'.'};
+                    string BW = (BWLabel.Text.Split(arr, 2))[0];
+                    configuration += " bw " + BW + "Kbit/s";
+                    //string BW = (Convert.ToInt32(Convert.ToDouble(BWLabel.Text) * 1024)).ToString();
+                    //configuration += " bw " + BW + "bit/s";
                 }
 
                 if (PLTB.Value != 0)
@@ -110,7 +113,9 @@ namespace NetEmulator
 
                 if (BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString() != "Unrestricted")
                 {
-                    configuration += " bw " + (Convert.ToInt32(Convert.ToDouble(BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString())*1024)) + "Kbit/s";
+                    char[] arr = { '.' };
+                    string BW = (BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString().Split(arr, 2))[0];
+                    configuration += " bw " + BW + "Kbit/s";    
                 }
 
                 if (PLtextBox.Text !="" && PLtextBox.Text != "0")
