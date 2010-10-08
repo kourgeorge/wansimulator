@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.Monitor = new System.Windows.Forms.Button();
             this.Host = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.NetMontimer = new System.Windows.Forms.Timer(this.components);
             this.RTTtoolStrip = new System.Windows.Forms.ToolStripStatusLabel();
             this.PingGraph = new System.Windows.Forms.ToolStripProgressBar();
@@ -53,14 +52,16 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.plotter = new Slepov.WinForms.Plotter();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Monitor
             // 
-            this.Monitor.Location = new System.Drawing.Point(190, 97);
+            this.Monitor.Location = new System.Drawing.Point(186, 109);
             this.Monitor.Name = "Monitor";
             this.Monitor.Size = new System.Drawing.Size(75, 29);
             this.Monitor.TabIndex = 2;
@@ -70,22 +71,10 @@
             // 
             // Host
             // 
-            this.Host.Location = new System.Drawing.Point(49, 103);
+            this.Host.Location = new System.Drawing.Point(11, 19);
             this.Host.Name = "Host";
-            this.Host.Size = new System.Drawing.Size(122, 20);
+            this.Host.Size = new System.Drawing.Size(137, 20);
             this.Host.TabIndex = 1;
-            this.Host.Text = "Host Name or IP";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
-            this.label1.Location = new System.Drawing.Point(13, 106);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Host";
             // 
             // NetMontimer
             // 
@@ -129,9 +118,9 @@
             this.PingGraph,
             this.PingTime,
             this.mstoolStrip});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 133);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 144);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(283, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(287, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.Stretch = false;
             this.statusStrip1.TabIndex = 3;
@@ -304,18 +293,28 @@
             this.plotter.TabIndex = 4;
             this.plotter.Text = "RTT History";
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.Host);
+            this.groupBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(239)))), ((int)(((byte)(244)))));
+            this.groupBox3.Location = new System.Drawing.Point(10, 94);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(154, 47);
+            this.groupBox3.TabIndex = 6;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Enter Host Name or IP";
+            // 
             // NetMon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(98)))), ((int)(((byte)(122)))), ((int)(((byte)(173)))));
-            this.ClientSize = new System.Drawing.Size(283, 155);
+            this.ClientSize = new System.Drawing.Size(287, 166);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.Monitor);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.Monitor);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.Host);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "NetMon";
             this.ShowInTaskbar = false;
@@ -328,8 +327,9 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -337,7 +337,6 @@
 
         private System.Windows.Forms.Button Monitor;
         private System.Windows.Forms.TextBox Host;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer NetMontimer;
         private System.Windows.Forms.ToolStripStatusLabel RTTtoolStrip;
         public System.Windows.Forms.ToolStripProgressBar PingGraph;
@@ -359,5 +358,6 @@
         private Slepov.WinForms.Plotter plotter;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }

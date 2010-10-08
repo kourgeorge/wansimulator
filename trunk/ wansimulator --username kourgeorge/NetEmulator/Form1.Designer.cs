@@ -110,9 +110,9 @@
             this.DelaytextBox = new System.Windows.Forms.TextBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.PLtextBox = new System.Windows.Forms.MaskedTextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.PLtextBox = new System.Windows.Forms.TextBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.BWcomboBox = new System.Windows.Forms.ComboBox();
@@ -790,7 +790,7 @@
             // 
             // ModetabControl
             // 
-            this.ModetabControl.Appearance = System.Windows.Forms.TabAppearance.Buttons;
+            this.ModetabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.ModetabControl.Controls.Add(this.BasicTab);
             this.ModetabControl.Controls.Add(this.AdvancedTab);
             this.ModetabControl.Location = new System.Drawing.Point(17, 94);
@@ -887,9 +887,9 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.PLtextBox);
             this.groupBox5.Controls.Add(this.label7);
             this.groupBox5.Controls.Add(this.label3);
-            this.groupBox5.Controls.Add(this.PLtextBox);
             this.groupBox5.Controls.Add(this.pictureBox5);
             this.groupBox5.Location = new System.Drawing.Point(12, 93);
             this.groupBox5.Name = "groupBox5";
@@ -898,6 +898,17 @@
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Packet Loss";
             // 
+            // PLtextBox
+            // 
+            this.PLtextBox.CutCopyMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
+            this.PLtextBox.Location = new System.Drawing.Point(77, 37);
+            this.PLtextBox.Mask = "00.0";
+            this.PLtextBox.Name = "PLtextBox";
+            this.PLtextBox.PromptChar = '0';
+            this.PLtextBox.Size = new System.Drawing.Size(161, 20);
+            this.PLtextBox.TabIndex = 17;
+            this.PLtextBox.TextMaskFormat = System.Windows.Forms.MaskFormat.IncludePromptAndLiterals;
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -905,9 +916,9 @@
             this.label7.ForeColor = System.Drawing.Color.MediumBlue;
             this.label7.Location = new System.Drawing.Point(327, 40);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(46, 13);
+            this.label7.Size = new System.Drawing.Size(55, 13);
             this.label7.TabIndex = 22;
-            this.label7.Text = "( 0 - 90 )";
+            this.label7.Text = "( 0 - 99.9 )";
             // 
             // label3
             // 
@@ -919,15 +930,6 @@
             this.label3.Size = new System.Drawing.Size(20, 16);
             this.label3.TabIndex = 21;
             this.label3.Text = "%";
-            // 
-            // PLtextBox
-            // 
-            this.PLtextBox.Location = new System.Drawing.Point(77, 35);
-            this.PLtextBox.Name = "PLtextBox";
-            this.PLtextBox.Size = new System.Drawing.Size(161, 20);
-            this.PLtextBox.TabIndex = 0;
-            this.PLtextBox.Text = "0";
-            this.PLtextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PLtextBox_KeyPress);
             // 
             // pictureBox5
             // 
@@ -1149,11 +1151,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox DelaytextBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox PLtextBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox BWcomboBox;
+        private System.Windows.Forms.MaskedTextBox PLtextBox;
     }
 }
 

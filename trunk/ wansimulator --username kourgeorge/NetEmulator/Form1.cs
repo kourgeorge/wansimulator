@@ -81,7 +81,7 @@ namespace NetEmulator
 
                 if (BWLabel.Text != "Unrestricted")
                 {
-                    char[] arr = {'.'};
+                    char[] arr = { '.' };
                     string BW = (BWLabel.Text.Split(arr, 2))[0];
                     configuration += " bw " + BW + "Kbit/s";
                     //string BW = (Convert.ToInt32(Convert.ToDouble(BWLabel.Text) * 1024)).ToString();
@@ -107,18 +107,18 @@ namespace NetEmulator
             for (int i = 1; i <= 2; i++)
             {
                 configuration += "ipfw pipe " + i + " config ";
-                if (DelaytextBox.Text!="")
-                configuration += "delay " + DelaytextBox.Text + "ms";
+                if (DelaytextBox.Text != "")
+                    configuration += "delay " + DelaytextBox.Text + "ms";
                 else configuration += "delay 0ms";
 
                 if (BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString() != "Unrestricted")
                 {
                     char[] arr = { '.' };
                     string BW = (BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString().Split(arr, 2))[0];
-                    configuration += " bw " + BW + "Kbit/s";    
+                    configuration += " bw " + BW + "Kbit/s";
                 }
 
-                if (PLtextBox.Text !="" && PLtextBox.Text != "0")
+                if (PLtextBox.Text != "00.0")
                 {
                     double val = Convert.ToDouble(PLtextBox.Text) / 100.0;
                     configuration += " plr " + val;
@@ -569,7 +569,19 @@ namespace NetEmulator
             if (Char.IsDigit(e.KeyChar) || e.KeyChar == 8)
             {
                 if (e.KeyChar == 8)
-                    DelaytextBox.Text.Remove(DelaytextBox.Text.Length - 1, 1);
+                {
+                    if (DelaytextBox.Text.Length > 0)
+                        DelaytextBox.Text.Remove(DelaytextBox.Text.Length - 1, 1);
+                }
+                else if ((DelaytextBox.Text=="0") && e.KeyChar == '0')
+                {
+                    e.Handled = true;
+                }
+                else if ((DelaytextBox.Text == "0") && e.KeyChar != '0')
+                {
+                    DelaytextBox.Text = e.KeyChar.ToString();
+                    e.Handled = true;
+                }
                 else if ((Convert.ToInt32((DelaytextBox.Text + e.KeyChar)) > 8000))
                 {
                     DelaytextBox.Text = "8000";
@@ -581,26 +593,6 @@ namespace NetEmulator
             else
                 e.Handled = true;
         }
-
-        private void PLtextBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-            if (Char.IsDigit(e.KeyChar) || e.KeyChar == 8)
-            {
-                if (e.KeyChar == 8)
-                    PLtextBox.Text.Remove(PLtextBox.Text.Length - 1, 1);
-                else if ((Convert.ToDouble((PLtextBox.Text + e.KeyChar)) > 90))
-                {
-                    PLtextBox.Text = "90";
-                    PLtextBox.SelectAll();
-                    e.Handled = true;
-                }
-
-            }
-            else
-                e.Handled = true;
-        }
-
 
     }
 
