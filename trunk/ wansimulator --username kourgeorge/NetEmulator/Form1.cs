@@ -30,7 +30,7 @@ namespace NetEmulator
             stopToolStripMenuItem.Enabled = false;
             StopStrip.Enabled = false;
             IncludePolicy = false;
-            BWcomboBox.SelectedIndex=15;  //select Unrestricted
+            BWcomboBox.SelectedIndex = 15;  //select Unrestricted
         }
         private string IncludePolicySimulationString()
         {
@@ -77,17 +77,18 @@ namespace NetEmulator
             for (int i = 1; i <= 2; i++)
             {
                 configuration += "ipfw pipe " + i + " config ";
-                configuration += "delay " + DelayTB.Value * 40 + "ms ";
+                configuration += "delay " + DelayTB.Value * 40 + "ms";
 
                 if (BWLabel.Text != "Unrestricted")
                 {
-                    configuration += "bw " + BWLabel.Text + "Kbit/s ";
+                    string BW = (Convert.ToInt32(Convert.ToDouble(BWLabel.Text) * 1024)).ToString();
+                    configuration += " bw " + BW + "bit/s";
                 }
 
                 if (PLTB.Value != 0)
                 {
-                    double val = Convert.ToInt32(PLLabel.Text) / 100.0;
-                    configuration += "plr " + val;
+                    double val = Convert.ToDouble(PLLabel.Text) / 100.0;
+                    configuration += " plr " + val;
                 }
 
                 configuration += " mask all";
@@ -103,17 +104,19 @@ namespace NetEmulator
             for (int i = 1; i <= 2; i++)
             {
                 configuration += "ipfw pipe " + i + " config ";
-                configuration += "delay " + DelaytextBox.Text + "ms ";
+                if (DelaytextBox.Text!="")
+                configuration += "delay " + DelaytextBox.Text + "ms";
+                else configuration += "delay 0ms";
 
-                if (BWcomboBox.SelectedText != "Unrestricted")
+                if (BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString() != "Unrestricted")
                 {
-                    configuration += "bw " + BWcomboBox.SelectedText + "Kbit/s ";
+                    configuration += " bw " + (Convert.ToInt32(Convert.ToDouble(BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString())*1024)) + "Kbit/s";
                 }
 
-                if (PLtextBox.Text != "0")
+                if (PLtextBox.Text !="" && PLtextBox.Text != "0")
                 {
-                    double val = Convert.ToInt32(PLtextBox.Text) / 100.0;
-                    configuration += "plr " + val;
+                    double val = Convert.ToDouble(PLtextBox.Text) / 100.0;
+                    configuration += " plr " + val;
                 }
 
                 configuration += " mask all";
@@ -142,7 +145,6 @@ namespace NetEmulator
                 else
                     sw.WriteLine(ExcludePolicySimulationString());
 
-                sw.WriteLine("ipfw pipe show");
                 sw.Close();
 
 
@@ -377,20 +379,41 @@ namespace NetEmulator
 
             XmlElement ConfigurationDescription = xmldoc.CreateElement("", "ConfigurationDescription", "");
 
+            //View 
+            XmlElement View = xmldoc.CreateElement("", "View", "");
+            XmlText actual_View;
+            if (ModetabControl.SelectedTab.Name == "BasicTab")
+                actual_View = xmldoc.CreateTextNode("Basic View");
+            else actual_View = xmldoc.CreateTextNode("Advanced View");
+            View.AppendChild(actual_View);
+
             //Delay Description
             XmlElement Delay = xmldoc.CreateElement("", "Delay", "");
-            XmlText actual_Delay = xmldoc.CreateTextNode(DelayTB.Value.ToString());
+            XmlText actual_Delay;
+            if (ModetabControl.SelectedTab.Name == "BasicTab")
+                actual_Delay = xmldoc.CreateTextNode(DelayTB.Value.ToString());
+            else actual_Delay = xmldoc.CreateTextNode(DelaytextBox.Text);
             Delay.AppendChild(actual_Delay);
 
             //PacketLoss Description
             XmlElement PacketLoss = xmldoc.CreateElement("", "PacketLoss", "");
-            XmlText actual_PacketLoss = xmldoc.CreateTextNode(PLTB.Value.ToString());
+            XmlText actual_PacketLoss;
+            if (ModetabControl.SelectedTab.Name == "BasicTab")
+                actual_PacketLoss = xmldoc.CreateTextNode(PLTB.Value.ToString());
+            else actual_PacketLoss = xmldoc.CreateTextNode(PLtextBox.Text);
             PacketLoss.AppendChild(actual_PacketLoss);
 
             //BandWidth Description
             XmlElement BandWidth = xmldoc.CreateElement("", "BandWidth", "");
-            XmlText actual_BandWidth = xmldoc.CreateTextNode(BWTB.Value.ToString());
+            XmlText actual_BandWidth;
+            if (ModetabControl.SelectedTab.Name == "BasicTab")
+                actual_BandWidth = xmldoc.CreateTextNode(BWTB.Value.ToString());
+            else actual_BandWidth = xmldoc.CreateTextNode(BWcomboBox.Items[BWcomboBox.SelectedIndex].ToString());
             BandWidth.AppendChild(actual_BandWidth);
+
+            View.AppendChild(Delay);
+            View.AppendChild(PacketLoss);
+            View.AppendChild(BandWidth);
 
             //Policy Description
             XmlElement Policy = xmldoc.CreateElement("", "Policy", "");
@@ -410,6 +433,7 @@ namespace NetEmulator
                 XMLFilteredIPList.AppendChild(IPelement);
             }
             //build Up the XML
+            ConfigurationDescription.AppendChild(View);
             ConfigurationDescription.AppendChild(Delay);
             ConfigurationDescription.AppendChild(PacketLoss);
             ConfigurationDescription.AppendChild(BandWidth);
@@ -450,20 +474,36 @@ namespace NetEmulator
                     XmlDocument xmldoc = new XmlDocument();
                     xmldoc.Load(Chosen_File);
 
+                    //View
+                    XmlNodeList ViewNode = xmldoc.GetElementsByTagName("View");
+                    string actual_ViewNode = ViewNode[0].InnerText;
+                    if (actual_ViewNode == "Basic View")
+                        ModetabControl.SelectedIndex = 0;
+                    else ModetabControl.SelectedIndex = 1;
+                    //ModetabControl.SelectedTab = this.ModetabControl.TabPages[this.ModetabControl.TabPages.IndexOf("AdvancedTab")];
+
+
                     //Delay
                     XmlNodeList DelayNode = xmldoc.GetElementsByTagName("Delay");
                     string actual_Delay = DelayNode[0].InnerText;
-                    DelayTB.Value = Convert.ToInt32(actual_Delay);
+                    if (actual_ViewNode == "Basic View")
+                        DelayTB.Value = Convert.ToInt32(actual_Delay);
+                    else DelaytextBox.Text = actual_Delay;
+
 
                     //Packet Loss
                     XmlNodeList PLNode = xmldoc.GetElementsByTagName("PacketLoss");
                     string actual_PL = PLNode[0].InnerText;
-                    PLTB.Value = Convert.ToInt32(actual_PL);
+                    if (actual_ViewNode == "Basic View")
+                        PLTB.Value = Convert.ToInt32(actual_PL);
+                    else PLtextBox.Text = actual_PL;
 
                     //BandWidth
                     XmlNodeList BWNode = xmldoc.GetElementsByTagName("BandWidth");
                     string actual_BW = BWNode[0].InnerText;
-                    BWTB.Value = Convert.ToInt32(actual_BW);
+                    if (actual_ViewNode == "Basic View")
+                        BWTB.Value = Convert.ToInt32(actual_BW);
+                    else BWcomboBox.SelectedIndex = BWcomboBox.Items.IndexOf(actual_BW);
 
                     //Policy
                     XmlNodeList PolicyNode = xmldoc.GetElementsByTagName("Policy");
@@ -509,24 +549,15 @@ namespace NetEmulator
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             DelayTB.Value = PLTB.Value = BWTB.Value = 0;
+            DelaytextBox.Text = PLtextBox.Text = "0";
+            BWcomboBox.SelectedIndex = 15;  //select Unrestricted
+            ModetabControl.SelectedIndex = 0;
             IncludePolicy = false;
             FilteredIPLinkedList.Clear();
             stopB_Click(sender, e);
         }
 
-        private void Form1timer_Tick(object sender, EventArgs e)
-        {
-            if (MainNotifyIcon.Icon == new Icon("run.ico"))
-            {
-                throw new Exception("working");
-            }
 
-        }
-
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
 
         private void DelaytextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -553,7 +584,7 @@ namespace NetEmulator
             {
                 if (e.KeyChar == 8)
                     PLtextBox.Text.Remove(PLtextBox.Text.Length - 1, 1);
-                else if ((Convert.ToInt32((PLtextBox.Text + e.KeyChar)) > 90))
+                else if ((Convert.ToDouble((PLtextBox.Text + e.KeyChar)) > 90))
                 {
                     PLtextBox.Text = "90";
                     PLtextBox.SelectAll();
@@ -565,24 +596,7 @@ namespace NetEmulator
                 e.Handled = true;
         }
 
-        private void BWcomboBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
 
-            if (Char.IsDigit(e.KeyChar) || e.KeyChar == 8)
-            {
-                if (e.KeyChar == 8)
-                    PLtextBox.Text.Remove(PLtextBox.Text.Length - 1, 1);
-                else if ((Convert.ToInt32((PLtextBox.Text + e.KeyChar)) > 10240.0))
-                {
-                    PLtextBox.Text = "Unrestricted";
-                    PLtextBox.SelectAll();
-                    e.Handled = true;
-                }
-
-            }
-            else
-                e.Handled = true;
-        }
     }
 
 }

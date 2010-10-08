@@ -95,7 +95,6 @@
             this.savebutton = new System.Windows.Forms.Button();
             this.ConfigurationgroupBox = new System.Windows.Forms.GroupBox();
             this.Form1toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.Form1timer = new System.Windows.Forms.Timer(this.components);
             this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.TopToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.RightToolStripPanel = new System.Windows.Forms.ToolStripPanel();
@@ -276,7 +275,6 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Packet Loss";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // PLBasicpanel
             // 
@@ -754,11 +752,6 @@
             this.ConfigurationgroupBox.TabStop = false;
             this.ConfigurationgroupBox.Text = "Configuration";
             // 
-            // Form1timer
-            // 
-            this.Form1timer.Enabled = true;
-            this.Form1timer.Tick += new System.EventHandler(this.Form1timer_Tick);
-            // 
             // BottomToolStripPanel
             // 
             this.BottomToolStripPanel.Location = new System.Drawing.Point(0, 0);
@@ -983,7 +976,6 @@
             this.BWcomboBox.Name = "BWcomboBox";
             this.BWcomboBox.Size = new System.Drawing.Size(161, 21);
             this.BWcomboBox.TabIndex = 0;
-            this.BWcomboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BWcomboBox_KeyPress);
             // 
             // label4
             // 
@@ -1136,7 +1128,6 @@
         private System.Windows.Forms.Button savebutton;
         private System.Windows.Forms.GroupBox ConfigurationgroupBox;
         private System.Windows.Forms.ToolTip Form1toolTip;
-        private System.Windows.Forms.Timer Form1timer;
         private System.Windows.Forms.Panel DelayBasicpanel;
         private System.Windows.Forms.Panel PLBasicpanel;
         private System.Windows.Forms.Panel BWBasicpanel;
