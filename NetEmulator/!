@@ -1,0 +1,228 @@
+######################################################################
+## Setting delay to 100ms for both incoming and outgoing ip packets ##
+## and sending 4 echo request to Google                             ##
+######################################################################
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw pipe 3 config delay 100ms mask all 
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add pipe 3 ip from any to any 
+00100 pipe 3 ip from any to any
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw pipe show 
+00003: unlimited       100 ms burst 0 
+q131075  50 sl. 0 flows (1 buckets) sched 65539 weight 0 lmax 0 pri 0 droptail
+ sched 65539 type FIFO flags 0x1 64 buckets 0 active
+    mask:  0xff 0xffffffff/0xffff -> 0xffffffff/0xffff
+BKT Prot ___Source IP/port____ ____Dest. IP/port____ Tot_pkt/bytes Pkt/Byte Drp
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ping -n 4 www.google.it 
+
+Pinging www.l.google.com [209.85.135.99] with 32 bytes of data:
+
+Reply from 209.85.135.99: bytes=32 time=370ms TTL=50
+Reply from 209.85.135.99: bytes=32 time=459ms TTL=50
+Reply from 209.85.135.99: bytes=32 time=467ms TTL=50
+Reply from 209.85.135.99: bytes=32 time=344ms TTL=50
+
+Ping statistics for 209.85.135.99:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 344ms, Maximum = 467ms, Average = 410ms
+##############################################
+## Raising delay to 300ms and pinging again ##
+##############################################
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw pipe 3 config delay 300ms mask all 
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw pipe show 
+00003: unlimited       300 ms burst 0 
+q131075  50 sl. 0 flows (1 buckets) sched 65539 weight 0 lmax 0 pri 0 droptail
+ sched 65539 type FIFO flags 0x1 64 buckets 4 active
+    mask:  0xff 0xffffffff/0xffff -> 0xffffffff/0xffff
+BKT Prot ___Source IP/port____ ____Dest. IP/port____ Tot_pkt/bytes Pkt/Byte Drp
+217 tcp    192.168.1.102/4850     74.125.39.19/80       3      890  0    0   0
+223 tcp     74.125.39.19/80      192.168.1.102/4850     3      481  0    0   0
+164 icmp   209.85.135.99/0       192.168.1.102/0        4      240  0    0   0
+173 icmp   192.168.1.102/0       209.85.135.99/0        4      240  0    0   0
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ping -n 4 www.google.com 
+
+Pinging www.l.google.com [72.14.221.104] with 32 bytes of data:
+
+Reply from 72.14.221.104: bytes=32 time=804ms TTL=52
+Reply from 72.14.221.104: bytes=32 time=770ms TTL=52
+Reply from 72.14.221.104: bytes=32 time=813ms TTL=52
+Reply from 72.14.221.104: bytes=32 time=767ms TTL=52
+
+Ping statistics for 72.14.221.104:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 767ms, Maximum = 813ms, Average = 788ms
+##################################
+## Shaping bandwidth to 500kbps ##
+##################################
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw pipe 3 config bw 500Kbit/s mask all 
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw pipe show 
+00003: 500.000 Kbit/s    0 ms burst 0 
+q131075  50 sl. 0 flows (1 buckets) sched 65539 weight 0 lmax 0 pri 0 droptail
+ sched 65539 type FIFO flags 0x1 64 buckets 5 active
+    mask:  0xff 0xffffffff/0xffff -> 0xffffffff/0xffff
+BKT Prot ___Source IP/port____ ____Dest. IP/port____ Tot_pkt/bytes Pkt/Byte Drp
+133 tcp  188.187.151.171/2052    192.168.1.102/4654     3      137  0    0   0
+ 16 icmp   192.168.1.102/0       72.14.221.104/0        4      240  0    0   0
+152 tcp    192.168.1.102/4654  188.187.151.171/2052     2       84  0    0   0
+217 tcp    192.168.1.102/4850     74.125.39.19/80       4      930  0    0   0
+233 icmp   72.14.221.104/0       192.168.1.102/0        4      240  0    0   0
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>wget http://info.iet.unipi.it/~luigi/1m 
+###################################
+## Lowering bandwidth to 250kbps ##
+###################################
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw pipe 3 config bw 250Kbit/s mask all 
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw pipe show 
+00003: 250.000 Kbit/s    0 ms burst 0 
+q131075  50 sl. 0 flows (1 buckets) sched 65539 weight 0 lmax 0 pri 0 droptail
+ sched 65539 type FIFO flags 0x1 64 buckets 6 active
+    mask:  0xff 0xffffffff/0xffff -> 0xffffffff/0xffff
+BKT Prot ___Source IP/port____ ____Dest. IP/port____ Tot_pkt/bytes Pkt/Byte Drp
+129 tcp    192.168.1.102/4851    131.114.58.84/80      23      920  0    0   0
+212 tcp  217.132.217.125/30004   192.168.1.102/4695     3      132  0    0   0
+ 92 tcp    131.114.58.84/80      192.168.1.102/4851   763  1079468  0    0   0
+ 93 udp    192.168.1.102/64832   80.179.52.100/53       1       83  0    0   0
+ 93 udp    192.168.1.102/64832   80.179.55.100/53       2      166  0    0   0
+ 41 tcp    192.168.1.102/4695  217.132.217.125/30004    2       84  0    0   0
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>wget http://info.iet.unipi.it/~luigi/1m 
+###################################################################
+## Simulating 50 percent packet loss and sending 15 echo request ##
+###################################################################
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add prob 0.5 deny proto icmp in 
+00100 prob 0.500000 deny ip from any to any proto icmp in
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ping -n 15 -w 300 www.google.it 
+
+Pinging www.l.google.com [209.85.135.99] with 32 bytes of data:
+
+Request timed out.
+Request timed out.
+Reply from 209.85.135.99: bytes=32 time=149ms TTL=50
+Request timed out.
+Request timed out.
+Reply from 209.85.135.99: bytes=32 time=273ms TTL=50
+Request timed out.
+Reply from 209.85.135.99: bytes=32 time=147ms TTL=50
+Request timed out.
+Reply from 209.85.135.99: bytes=32 time=154ms TTL=50
+Reply from 209.85.135.99: bytes=32 time=272ms TTL=50
+Request timed out.
+Reply from 209.85.135.99: bytes=32 time=149ms TTL=50
+Request timed out.
+Request timed out.
+
+Ping statistics for 209.85.135.99:
+    Packets: Sent = 15, Received = 6, Lost = 9 (60% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 147ms, Maximum = 273ms, Average = 190ms
+##############################
+## Showing SYSCTL variables ##
+##############################
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw sysctl -a 
+net.inet.ip.fw.dyn_buckets: 256 
+net.inet.ip.fw.curr_dyn_buckets: 256 	(read only)
+net.inet.ip.fw.dyn_count: 0 	(read only)
+net.inet.ip.fw.dyn_max: 4096 
+net.inet.ip.fw.dyn_ack_lifetime: 300 
+net.inet.ip.fw.dyn_syn_lifetime: 20 
+net.inet.ip.fw.dyn_fin_lifetime: 1 
+net.inet.ip.fw.dyn_rst_lifetime: 1 
+net.inet.ip.fw.dyn_udp_lifetime: 10 
+net.inet.ip.fw.dyn_short_lifetime: 5 
+net.inet.ip.fw.dyn_keepalive: 1 
+net.inet.ip.fw.one_pass: 1 
+net.inet.ip.fw.autoinc_step: 100 
+net.inet.ip.fw.verbose: 0 
+net.inet.ip.fw.verbose_limit: 0 
+net.inet.ip.fw.default_rule: 65535 	(read only)
+net.inet.ip.fw.tables_max: 128 	(read only)
+net.inet.ip.fw.default_to_accept: 1 	(read only)
+net.inet.ip.fw.static_count: 1 	(read only)
+net.inet.ip.dummynet.hash_size: 64 
+net.inet.ip.dummynet.pipe_slot_limit: 100 
+net.inet.ip.dummynet.pipe_byte_limit: 1048576 
+net.inet.ip.dummynet.io_fast: 0 
+net.inet.ip.dummynet.debug: 0 
+net.inet.ip.dummynet.expire: 1 
+net.inet.ip.dummynet.expire_cycle: 0 	(read only)
+net.inet.ip.dummynet.red_lookup_depth: 256 	(read only)
+net.inet.ip.dummynet.red_avg_pkt_size: 512 	(read only)
+net.inet.ip.dummynet.red_max_pkt_size: 1500 	(read only)
+net.inet.ip.dummynet.tick_delta: 967 	(read only)
+net.inet.ip.dummynet.tick_delta_sum: 375 	(read only)
+net.inet.ip.dummynet.tick_adjustment: 664499 	(read only)
+net.inet.ip.dummynet.tick_diff: 674821 	(read only)
+net.inet.ip.dummynet.tick_lost: 0 	(read only)
+net.inet.ip.dummynet.schk_count: 0 	(read only)
+net.inet.ip.dummynet.si_count: 0 	(read only)
+net.inet.ip.dummynet.fsk_count: 0 	(read only)
+net.inet.ip.dummynet.queue_count: 0 	(read only)
+net.inet.ip.dummynet.io_pkt: 18186 	(read only)
+net.inet.ip.dummynet.io_pkt_fast: 2866 	(read only)
+net.inet.ip.dummynet.io_pkt_drop: 0 	(read only)
+#############################################
+## Inserting rules to test command parsing ##
+#############################################
+-- dropping all packets of a specific protocol --
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add deny proto icmp 
+00100 deny ip from any to any proto icmp
+-- dropping packets of all protocols except a specific one --
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add deny not proto tcp 
+00200 deny ip from any to any not proto tcp
+-- dropping all packets from IP x to IP y --
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add deny src-ip 1.2.3.4 dst-ip 5.6.7.8 
+00300 deny ip from any to any src-ip 1.2.3.4 dst-ip 5.6.7.8
+-- dropping all ssh outgoing connections --
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add deny out dst-port 22 
+00400 deny ip from any to any out dst-port 22
+-- allowing already opened browser connections --
+-- but preventing new ones from being opened   --
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add deny out proto tcp dst-port 80 tcpflags syn 
+00500 deny ip from any to any out proto tcp dst-port 80 tcpflags syn
+-- another way to do the same thing --
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add allow out proto tcp dst-port 80 established 
+00600 allow ip from any to any out proto tcp dst-port 80 established
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw add deny out proto tcp dst-port 80 setup 
+00700 deny ip from any to any out proto tcp dst-port 80 setup
+-- checking what rules have been inserted --
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw -c show 
+00100     0        0 deny proto icmp
+00200     2      686 deny not proto tcp
+00300     0        0 deny src-ip 1.2.3.4 dst-ip 5.6.7.8
+00400     0        0 deny out dst-port 22
+00500     0        0 deny out proto tcp dst-port 80 tcpflags syn
+00600     0        0 allow out proto tcp dst-port 80 established
+00700     0        0 deny out proto tcp dst-port 80 setup
+65535 18731 11742041 allow ip from any to any
+#################
+## Cleaning up ##
+#################
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw -q flush 
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>ipfw -q pipe flush 
+
+C:\Documents and Settings\kour\Desktop\DUMMUNET>pause
+Press any key to continue . . . 
