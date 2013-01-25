@@ -38,7 +38,6 @@ namespace Slepov.WinForms
             this.plotArea1.Size = new System.Drawing.Size(0, 0);
             this.plotArea1.TabIndex = 0;
             this.plotArea1.Text = "plotArea1";
-            this.plotArea1.Click += new System.EventHandler(this.plotArea1_Click);
             this.ResumeLayout(false);
 
         }

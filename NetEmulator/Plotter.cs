@@ -16,7 +16,7 @@ namespace Slepov.WinForms
     {
         /// <summary>
         /// </summary>
-        public Plotter ()
+        public Plotter () 
         {
             InitializeComponent ();
 
@@ -32,6 +32,7 @@ namespace Slepov.WinForms
 
             this.BackColorChanged += delegate {this.plotArea.Invalidate ();};
             this.ForeColorChanged += delegate {this.plotArea.Invalidate ();};
+            bitmap = new Bitmap(200, 200);
         }
 
         void LayoutControls ()
@@ -117,6 +118,7 @@ namespace Slepov.WinForms
 
         readonly PlotArea plotArea = new PlotArea ();
         readonly HScrollBar scrollBar = new HScrollBar ();
+        private Bitmap bitmap;
 
         #region Min
 
@@ -183,13 +185,19 @@ namespace Slepov.WinForms
 
         readonly RingBuffer <float> values = new RingBuffer <float> (1000);
 
+
+        public float [] GetBuffer ()
+        {
+          return values.GetBuffer();
+        }
+
         public void Clear()
         {
             values.Clear();
         }
 
 
-        void PaintGraph (Graphics g)
+        public void PaintGraph (Graphics g)
         {
             if (this.values.Count == 0) return;
 
@@ -228,16 +236,13 @@ namespace Slepov.WinForms
             }
         }
 
+
         float ScaleY (float y)
         {
             int h = this.plotArea.Height;
             return h - (y - min)/(max - min) * h;
         }
 
-        private void plotArea1_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 
     class PlotArea : Control
@@ -301,7 +306,19 @@ namespace Slepov.WinForms
             empty = false;
         }
 
-        public T this [int i]
+      public T[] GetBuffer()
+      {
+        T[] arr = new T[Count];
+        
+        for (int i=0; i<Count; i++)
+        {
+          int j = (tail+i)%buf.Length;
+          arr[i] = buf[j];
+        }
+        return arr;
+      }
+
+      public T this [int i]
         {
             get {return buf [ShiftIndex (i)];}
         }

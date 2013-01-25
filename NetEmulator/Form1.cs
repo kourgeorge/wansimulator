@@ -598,6 +598,12 @@ namespace NetEmulator
                 e.Handled = true;
         }
 
+        private void speedTestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+          SpeedTest SpeedTestForm = new SpeedTest();
+          SpeedTestForm.Show();
+        }
+
     }
 
 }
